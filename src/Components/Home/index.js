@@ -8,8 +8,8 @@ import { useNavigate } from "react-router";
 export default function Home({setData}){
 
     const navigate = useNavigate();
-    const [email, setEmail] = useState("");
-    const [senha, setSenha] = useState("");
+    const [email, setEmail] = useState("clara@driven.com");
+    const [senha, setSenha] = useState("clara");
 
     function handleSubmit(e){
         e.preventDefault();
@@ -18,7 +18,6 @@ export default function Home({setData}){
             email: email,
             password: senha
         })
-
 
         promisse.then(response => {
             setData(response.data)

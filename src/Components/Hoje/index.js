@@ -1,17 +1,26 @@
 import { useContext, useEffect, useState } from 'react'
 import styled from "styled-components";
 import picture from './../../Assets/TrackIt.png'
+import check from './../../Assets/Check.png'
 import { Link } from 'react-router-dom';
 import UserContext from "../Context/UserContext";
 import dayjs from 'dayjs';
 import axios from 'axios';
+import {
+    CircularProgressbar,
+    CircularProgressbarWithChildren,
+    buildStyles
+} from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 
 export default function Hoje(){
 
     const weekdays = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]
     const { data } = useContext(UserContext);
-    const [habitosHoje, setHabitosHoje] = useState([])
+    const [habitosHoje, setHabitosHoje] = useState([]);
+    const [concluidos, setConcluidos] = useState([]);
+    const [percentage, setPercentage] = useState(0);
 
     useEffect(() => {
 
@@ -27,6 +36,18 @@ export default function Hoje(){
         })
     }, [])
 
+
+    function addConcluidos(id){
+        if(concluidos.includes(id)){
+            const index = concluidos.indexOf(id);
+            if (index > -1) {
+                concluidos.splice(index, 1);
+            }
+        }else{
+            setConcluidos([...concluidos, id]);
+        }
+    }
+
     
     let dia = dayjs().format('DD/MM')
     return(
@@ -37,15 +58,42 @@ export default function Hoje(){
             </Top>
             <Content>
                 <Texto>{weekdays[dayjs().day()]}, {dia}</Texto>
+                {habitosHoje.map((habito, index) => {
+                    return(
+                        <Habito key={index} onClick={()=> {
+                            addConcluidos(habito.id)
+                            }}>
+                            <Infos>
+                                <h1>{habito.name}</h1>
+                                <p>Sequência atual: {habito.currentSequence} dias</p>
+                                <p>Seu recorde: {habito.highestSequence} dias</p>
+                            </Infos>
+                            <Feito>
+                                <img src={check} alt=""></img>
+                            </Feito>
+                        </Habito>
+                    )
+                })}
             </Content>
             <Menu>
                 <StyledLink to={"/habitos"}>
                     <p>Hábitos</p>
                 </StyledLink>
                 <StyledLink to={"/hoje"}>
-                    <p>Hoje</p>
+                    <Circulo
+                        value={percentage}
+                        text={`Hoje`}
+                        background
+                        backgroundPadding={6}
+                        styles={buildStyles({
+                            backgroundColor: "#3e98c7",
+                            textColor: "#fff",
+                            pathColor: "#fff",
+                            trailColor: "transparent"
+                        })}
+                    />
                 </StyledLink>
-                <StyledLink to={"/"}>
+                <StyledLink to={"/historico"}>
                     <p>Histórico</p>
                 </StyledLink>
             </Menu>
@@ -67,6 +115,54 @@ const Top = styled.div`
     box-sizing: border-box;
     background: #126BA5;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+`
+
+const Habito = styled.div`
+    margin-top: 20px; 
+    width: 340px;
+    height: 94px;
+    background: #FFFFFF;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 15px;
+    border: 1px solid black;
+`
+
+const Infos = styled.div`
+    display: flex;
+    flex-direction: column;
+
+    h1{
+        font-family: 'Lexend Deca', sans-serif;
+        font-size: 20px;
+        color: #666666;
+        margin-bottom: 7px;
+    }
+
+    p{
+        font-family: 'Lexend Deca', sans-serif;
+        font-size: 13px;
+        color: #666666;
+    }
+`
+const Feito = styled.div`
+    width: 69px;
+    height: 69px;
+    background: #EBEBEB;
+    border: 1px solid #E7E7E7;
+    box-sizing: border-box;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
+
+const Circulo = styled(CircularProgressbar)`
+    width: 91px;
+    position: absolute;
+    bottom: 10px;
+    left: 38vw;
 `
 
 const Logo = styled.img`
@@ -99,7 +195,7 @@ const Menu = styled.div`
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: black;
+    background-color: #FFFFFF;
     display: flex;
     align-items: center;
     justify-content: space-between;
