@@ -13,7 +13,6 @@ import "react-circular-progressbar/dist/styles.css";
 export default function Historico(){
 
     const { data } = useContext(UserContext);
-    let percentage = 13;
 
     return(
         <>
@@ -31,7 +30,7 @@ export default function Historico(){
                 </StyledLink>
                 <StyledLink to={"/hoje"}>
                     <Circulo
-                            value={percentage}
+                            value={0}
                             text={`Hoje`}
                             background
                             backgroundPadding={6}

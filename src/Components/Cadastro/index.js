@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import Imagem from "./../../Assets/Logo.png"
 import axios from "axios";
 import { useNavigate } from "react-router";
+import { ThreeDots } from 'react-loader-spinner';
+
 
 export default function Cadastro(){
     const navigate = useNavigate();
@@ -12,9 +14,11 @@ export default function Cadastro(){
     const [senha, setSenha] = useState("");
     const [nome, setNome] = useState("");
     const [foto, setFoto] = useState("");
+    const [loading, setLoading] = useState(false)
 
     function handleSubmit(e){
         e.preventDefault();
+        setLoading(true)
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up";
         const promisse = axios.post(URL, {
             email: email,
@@ -25,11 +29,13 @@ export default function Cadastro(){
         
         promisse.then(response => {
             const {data} = response;
+            alert("Cadastro feito com sucesso!")
             navigate("/")
         });
 
         promisse.catch(error => {
             alert("Ocorreu um erro. Recarregue a página e tente novamente")
+            setLoading(false);
         })
     }
 
@@ -46,7 +52,7 @@ export default function Cadastro(){
                 <input type="password" placeholder="senha" name="senha" value={senha} onChange={(e) => setSenha(e.target.value)} required ></input>
                 <input type="text" placeholder="nome" name="nome" value={nome} onChange={(e) => setNome(e.target.value)} required></input>
                 <input type="url" placeholder="foto" name="foto" value={foto} onChange={(e) => setFoto(e.target.value)} required></input>
-                <button type="submit"><p>Cadastrar</p></button>
+                <button type="submit">{loading ? <ThreeDots color="#fff" height={13}/>  : <p>Cadastrar</p>}</button>
             </Form>
 
             <StyledLink to={"/"}>
@@ -67,7 +73,7 @@ const Container = styled.div`
 const Logo = styled.div`
     img{
         width: 180px;
-        heigth: 115px;
+        height: 178.38px;
     }
 `;
 
@@ -104,6 +110,9 @@ const Form = styled.form`
         background: #52B6FF;
         border-radius: 4.63636px;
         border: none;
+        display: flex;
+        align-items:center;
+        justify-content: center;
     }
 
     button p{

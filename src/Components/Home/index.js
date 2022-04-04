@@ -4,15 +4,19 @@ import { Link } from "react-router-dom";
 import Imagem from "./../../Assets/Logo.png"
 import axios from "axios";
 import { useNavigate } from "react-router";
+import { ThreeDots } from 'react-loader-spinner';
 
 export default function Home({setData}){
 
     const navigate = useNavigate();
     const [email, setEmail] = useState("clara@driven.com");
     const [senha, setSenha] = useState("clara");
+    const [loading, setLoading] = useState(false)
 
     function handleSubmit(e){
         e.preventDefault();
+        setLoading(true)
+
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
         const promisse = axios.post(URL, {
             email: email,
@@ -26,6 +30,7 @@ export default function Home({setData}){
 
         promisse.catch(error => {
             alert("Ocorreu um erro. Recarregue a página e tente novamente")
+            setLoading(false);
         })
     }
 
@@ -38,7 +43,7 @@ export default function Home({setData}){
             <Form onSubmit={handleSubmit}>
                 <input type="email" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} required></input>
                 <input type="password" placeholder="senha" value={senha} onChange={(e) => setSenha(e.target.value)} required></input>
-                <button type="submit"><p>Entrar</p></button>
+                <button type="submit">{loading ? <ThreeDots color="#fff" height={13}/>  : <p>Entrar</p>}</button>
             </Form>
 
             <StyledLink to={"/Cadastro"}>
@@ -96,6 +101,9 @@ const Form = styled.form`
         background: #52B6FF;
         border-radius: 4.63636px;
         border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     button p{

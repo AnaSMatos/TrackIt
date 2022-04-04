@@ -16,11 +16,7 @@ export default function Habitos(){
     const { data, meusHabitos, setMeusHabitos } = useContext(UserContext);
     
     const [create, setCreate] = useState(false)
-    const [name, setName] = useState("");
-    const [days, setDays] = useState([]);
     const [novoHabito, setNovoHabito] = useState({name: "", days: []})
-
-    let percentage = 12;
 
     useEffect(() => {
 
@@ -36,16 +32,18 @@ export default function Habitos(){
         })
     }, [meusHabitos])
 
-    function listDays(day){
-        if(novoHabito.days.includes(day)){
+    function listDays(e, day){
+        if(e.target.parentNode.className === "sc-kgflAQ htrXda nao-selecionado"){
+            e.target.parentNode.className = "sc-kgflAQ htrXda selecionado"
+            setNovoHabito({...novoHabito, days:[...novoHabito.days, day]})
+            console.log(novoHabito)
+        }else if(e.target.parentNode.className === "sc-kgflAQ htrXda selecionado"){
+            e.target.parentNode.className = "sc-kgflAQ htrXda nao-selecionado"
             const index = novoHabito.days.indexOf(day);
             if (index > -1) {
-            novoHabito.days.splice(index, 1);
+                novoHabito.days.splice(index, 1);
+                console.log(novoHabito)
             }
-            console.log(novoHabito.days)
-        }else{
-            setNovoHabito({...novoHabito, days:[...novoHabito.days, day]})
-            console.log(novoHabito.days)
         }
     }
 
@@ -60,24 +58,32 @@ export default function Habitos(){
         const promisse = axios.post(url, novoHabito, config);
         promisse.then(response => {
             console.log(response)
+            setCreate(false)
         })
 
         promisse.catch(err =>{
-            alert("deu ruim")
+            alert(err.response.data.message);
         })
     }
 
     function deletar(hab){
-        const config = {
-            headers: {
-                Authorization : `Bearer ${data.token}`
+        let confirm = window.confirm("Tem certeza que quer apagar esse hábito?");
+        
+        if(confirm){
+            const config = {
+                headers: {
+                    Authorization : `Bearer ${data.token}`
+                }
             }
+            const promisse = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${hab.id}`, config)
+            promisse.then(response => {
+                alert("Hábito apagado")
+            })
+
+            promisse.catch(err => {
+                alert("Não foi possivel deletar esse hábito")
+            })
         }
-        console.log(hab)
-        const promisse = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${hab.id}`, config)
-        promisse.then(response => {
-            alert("apagou!")
-        })
     }
 
     return(
@@ -102,25 +108,24 @@ export default function Habitos(){
                     <Criar>
                         <input type="text" placeholder='nome do hábito' value={novoHabito.name} onChange={(e) => setNovoHabito({...novoHabito, name:e.target.value})}></input>
                         <Days>
-                            <Day onClick={() => listDays(0)}><p>D</p></Day>
-                            <Day onClick={() => listDays(1)}><p>S</p></Day>
-                            <Day onClick={() => listDays(2)}><p>T</p></Day>
-                            <Day onClick={() => listDays(3)}><p>Q</p></Day>
-                            <Day onClick={() => listDays(4)}><p>Q</p></Day>
-                            <Day onClick={() => listDays(5)}><p>S</p></Day>
-                            <Day onClick={() => listDays(6)}><p>S</p></Day>
+                            <Day className='nao-selecionado' onClick={(e) => listDays(e, 0)}><p>D</p></Day>
+                            <Day className='nao-selecionado' onClick={(e) => listDays(e, 1)}><p>S</p></Day>
+                            <Day className='nao-selecionado' onClick={(e) => listDays(e, 2)}><p>T</p></Day>
+                            <Day className='nao-selecionado' onClick={(e) => listDays(e, 3)}><p>Q</p></Day>
+                            <Day className='nao-selecionado' onClick={(e) => listDays(e, 4)}><p>Q</p></Day>
+                            <Day className='nao-selecionado' onClick={(e) => listDays(e, 5)}><p>S</p></Day>
+                            <Day className='nao-selecionado' onClick={(e) => listDays(e, 6)}><p>S</p></Day>
                         </Days>
 
                         <Buttons>
                             <Cancelar onClick={()=>{
                                 setCreate(false);
-                                setNovoHabito({name:"", days: []});
                                 }
                             }><p>Cancelar</p></Cancelar>
                             <Salvar onClick={() => {
                                 postHabit();
                                 setNovoHabito({name:"", days: []})
-                                setCreate(false)}}><p>Salvar</p></Salvar>
+                                }}><p>Salvar</p></Salvar>
                         </Buttons>
                     </Criar>
                     :
@@ -128,24 +133,27 @@ export default function Habitos(){
                 }
                 
                 <HabitsList> 
-                    {meusHabitos.map((habito)=>{
-                        return(
-                            <Habito key={habito.id}>
-                                <Name>{habito.name}</Name>
-                                <Days>
-                                    <Day><p>D</p></Day>
-                                    <Day><p>S</p></Day>
-                                    <Day><p>T</p></Day>
-                                    <Day><p>Q</p></Day>
-                                    <Day><p>Q</p></Day>
-                                    <Day><p>S</p></Day>
-                                    <Day><p>S</p></Day>
-                                </Days>
-                                <button onClick={() => deletar(habito)}><img src={Delete}></img></button>
-                            </Habito>
-                            
-                        )
-                    })}
+                    {meusHabitos.length === 0 ?
+                        <Aviso>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</Aviso>
+                    :
+                        meusHabitos.map((habito)=>{
+                            return(
+                                <Habito key={habito.id}>
+                                    <Name>{habito.name}</Name>
+                                    <Days>
+                                        <Day className={habito.days.includes(0) ? "selecionado" : "nao-selecionado"}><p>D</p></Day>
+                                        <Day className={habito.days.includes(1) ? "selecionado" : "nao-selecionado"}><p>S</p></Day>
+                                        <Day className={habito.days.includes(2) ? "selecionado" : "nao-selecionado"}><p>T</p></Day>
+                                        <Day className={habito.days.includes(3) ? "selecionado" : "nao-selecionado"}><p>Q</p></Day>
+                                        <Day className={habito.days.includes(4) ? "selecionado" : "nao-selecionado"}><p>Q</p></Day>
+                                        <Day className={habito.days.includes(5) ? "selecionado" : "nao-selecionado"}><p>S</p></Day>
+                                        <Day className={habito.days.includes(6) ? "selecionado" : "nao-selecionado"}><p>S</p></Day>
+                                    </Days>
+                                    <button onClick={() => deletar(habito)}><img src={Delete}></img></button>
+                                </Habito>
+                                
+                            )
+                        })}
                 </HabitsList>
             </Content>
 
@@ -156,7 +164,7 @@ export default function Habitos(){
                 </StyledLink>
                 <StyledLink to={"/hoje"}>
                     <Circulo
-                        value={percentage}
+                        value={0}
                         text={`Hoje`}
                         background
                         backgroundPadding={6}
@@ -195,19 +203,21 @@ const Top = styled.div`
 const Name = styled.h1`
     font-size: 20px;
     color: #666666;
+    font-family: 'Lexend Deca', sans-serif;
 `
 
 const Habito = styled.div`
     margin-top: 25px;
     width: 340px;
     height: 91px;
-    background: lightblue;
+    background: #FFFFFF;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     box-sizing: border-box;
     padding: 15px;
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.10);
 
     button{
         width: 20px;
@@ -298,6 +308,20 @@ const Days = styled.div`
     display: flex;
     align-items: flex-end;
     width: 305px;
+
+    .nao-selecionado{
+        background: #FFFFFF;
+        p{
+            color: #DBDBDB;
+        }
+    }
+
+    .selecionado{
+        background: #CFCFCF;
+        p{
+            color: #FFFFFF;
+        }
+    }
 `
 const Day = styled.div`
     width: 30px;
@@ -305,7 +329,6 @@ const Day = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #FFFFFF;
     border: 1px solid #D5D5D5;
     box-sizing: border-box;
     border-radius: 5px;
