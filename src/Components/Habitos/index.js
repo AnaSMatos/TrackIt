@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import styled from "styled-components"
 import UserContext from "../Context/AppContext";
-import picture from './../../Assets/TrackIt.png'
 import axios from 'axios';
 import Delete from "./../../Assets/lisho.png";
 
@@ -81,13 +80,6 @@ export default function Habitos(){
 
     return(
         <>
-            <Top>
-                <Logo src={picture} alt=""/>
-                <Img src={data.image}></Img>
-            </Top>
-
-
-
             <Content>
                 <Titulo>
                     <Texto>
@@ -153,21 +145,6 @@ export default function Habitos(){
     )
 }
 
-const Top = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 70px;
-    width: 100vw;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px;
-    box-sizing: border-box;
-    background: #126BA5;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-`
 
 const Name = styled.h1`
     font-size: 20px;
@@ -199,11 +176,6 @@ const Habito = styled.div`
         border: none;
         background: none;
     }
-`
-
-const Logo = styled.img`
-    width: 97px;
-    height: 30px;
 `
 
 const Content = styled.div`
@@ -346,10 +318,4 @@ const Aviso = styled.p`
     font-family: 'Lexend Deca', sans-serif;
     color: #666666;
     font-size: 18px;
-`
-
-const Img = styled.img`
-    width: 51px;
-    height: 51px;
-    border-radius: 50%;
 `

@@ -1,12 +1,12 @@
 import styled from "styled-components"
 import { Link } from "react-router-dom";
 import AppContext from "../Context/AppContext";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 export default function FooterMenu(){
-    const {percentage, setPercentage} = useContext(AppContext)
-    // const [percentage, setPercentage] = useState(0);
+    const {percentage} = useContext(AppContext)
 
     return(
         <Menu>
@@ -14,18 +14,20 @@ export default function FooterMenu(){
                 <p>Hábitos</p>
             </StyledLink>
             <StyledLink to={"/hoje"}>
-                <Circulo
-                    value={percentage}
+                <Circulo>
+                    <CircularProgressbar
+                    value={0}
                     text={`Hoje`}
                     background
                     backgroundPadding={6}
                     styles={buildStyles({
-                        backgroundColor: "#3e98c7",
+                        backgroundColor: "#52b6ff",
                         textColor: "#fff",
                         pathColor: "#fff",
                         trailColor: "transparent"
                     })}
                 />
+                </Circulo>
             </StyledLink>
             <StyledLink to={"/historico"}>
                 <p>Histórico</p>
@@ -49,18 +51,14 @@ const Menu = styled.div`
 `;
 
 const StyledLink = styled(Link)`
-    font-family: 'Lexend Deca',sans-serif;
     color: #52B6FF;
-    font-size: 14px;
-
-    p{
-        font-size: 18px;
-    }
+    text-decoration: none;
+    font-family: 'Lexend Deca', sans-serif;
+    font-weight: 300;
+    font-size: 18px;
 `;
 
-const Circulo = styled(CircularProgressbar)`
-    width: 91px;
-    position: absolute;
-    bottom: 10px;
-    left: 38vw;
+const Circulo = styled.div`
+    width: 90px;
+    margin-bottom: 45px;
 `;
