@@ -1,14 +1,13 @@
 import { useContext, useEffect, useState } from 'react'
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import picture from './../../Assets/TrackIt.png'
 import check from './../../Assets/Check.png'
 import { Link } from 'react-router-dom';
-import UserContext from "../Context/UserContext";
 import dayjs from 'dayjs';
 import axios from 'axios';
+import AppContext from '../Context/AppContext';
 import {
     CircularProgressbar,
-    CircularProgressbarWithChildren,
     buildStyles
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -17,7 +16,7 @@ import "react-circular-progressbar/dist/styles.css";
 export default function Hoje(){
 
     const weekdays = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]
-    const { data } = useContext(UserContext);
+    const { data } = useContext(AppContext);
     const [habitosHoje, setHabitosHoje] = useState([]);
     const [percentage, setPercentage] = useState(0);
     const [numHabitos, setNumHabitos] = useState(1);
@@ -115,28 +114,6 @@ export default function Hoje(){
                     )
                 })}
             </Content>
-            <Menu>
-                <StyledLink to={"/habitos"}>
-                    <p>Hábitos</p>
-                </StyledLink>
-                <StyledLink to={"/hoje"}>
-                    <Circulo
-                        value={percentage}
-                        text={`Hoje`}
-                        background
-                        backgroundPadding={6}
-                        styles={buildStyles({
-                            backgroundColor: "#3e98c7",
-                            textColor: "#fff",
-                            pathColor: "#fff",
-                            trailColor: "transparent"
-                        })}
-                    />
-                </StyledLink>
-                <StyledLink to={"/historico"}>
-                    <p>Histórico</p>
-                </StyledLink>
-            </Menu>
         </>
     )
 }
@@ -204,13 +181,6 @@ const Feito = styled.div`
     justify-content: center;
 `
 
-const Circulo = styled(CircularProgressbar)`
-    width: 91px;
-    position: absolute;
-    bottom: 10px;
-    left: 38vw;
-`
-
 const Logo = styled.img`
     width: 97px;
     height: 30px;
@@ -235,27 +205,3 @@ const Img = styled.img`
     height: 51px;
     border-radius: 50%;
 `
-
-const Menu = styled.div`
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: #FFFFFF;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 30px;
-    box-sizing: border-box;
-    height: 70px;
-    `
-
-const StyledLink = styled(Link)`
-    font-family: 'Lexend Deca',sans-serif;
-    color: #52B6FF;
-    font-size: 14px;
-
-    p{
-        font-size: 18px;
-    }
-    `;
