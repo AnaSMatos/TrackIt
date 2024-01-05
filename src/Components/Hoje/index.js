@@ -1,17 +1,9 @@
 import { useContext, useEffect, useState } from 'react'
 import styled from "styled-components";
-import picture from './../../Assets/TrackIt.png'
 import check from './../../Assets/Check.png'
-import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import AppContext from '../Context/AppContext';
-import {
-    CircularProgressbar,
-    buildStyles
-} from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
-
 
 export default function Hoje(){
 
@@ -93,10 +85,6 @@ export default function Hoje(){
     let dia = dayjs().format('DD/MM')
     return(
         <>
-            <Top>
-                <Logo src={picture} alt=""/>
-                <Img src={data.image}></Img>
-            </Top>
             <Content>
                 <Texto>{weekdays[dayjs().day()]}, {dia}</Texto>
                 {habitosHoje.map((habito, index) => {
@@ -117,22 +105,6 @@ export default function Hoje(){
         </>
     )
 }
-
-const Top = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 70px;
-    width: 100vw;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px;
-    box-sizing: border-box;
-    background: #126BA5;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-`
 
 const Habito = styled.div`
     margin-top: 20px; 
@@ -181,11 +153,6 @@ const Feito = styled.div`
     justify-content: center;
 `
 
-const Logo = styled.img`
-    width: 97px;
-    height: 30px;
-`
-
 const Content = styled.div`
     height: calc(100vh - 200px);
     margin-top: 100px;
@@ -198,10 +165,4 @@ const Texto = styled.div`
     font-family: 'Lexend Deca', sans-serif;
     color: #126BA5;
     font-size: 23px;
-`
-
-const Img = styled.img`
-    width: 51px;
-    height: 51px;
-    border-radius: 50%;
 `

@@ -6,7 +6,7 @@ import Habitos from './../Habitos/';
 import Hoje from './../Hoje/';
 import Historico from './../Historico/'
 import AppContext from "../Context/AppContext";
-import FooterMenu from '../FooterMenu';
+import PageLayout from '../PageLayout';
 
 
 export default function App(){
@@ -18,18 +18,35 @@ export default function App(){
         <AppContext.Provider value={{data, setData, meusHabitos, setMeusHabitos,
         percentage, setPercentage}}>
             <BrowserRouter>
-            <div>
                 <Routes>
                     <Route path='/' element={<Home setData={setData}/>}/>
                     <Route path='/cadastro' element={<Cadastro/>}/>
-                    <Route path='/habitos' element={<Habitos/>}/>
-                    <Route path='/hoje' element={<Hoje/>}/>
-                    <Route path='/historico' element={<Historico/>}/>
+                    <Route 
+                        path='/habitos' 
+                        element={
+                            <PageLayout>
+                                <Habitos/>
+                            </PageLayout>
+                        }
+                    />
+                    <Route 
+                        path='/hoje' 
+                        element={
+                            <PageLayout>
+                                <Hoje/>
+                            </PageLayout>
+                        }
+                    />
+                    <Route 
+                        path='/historico' 
+                        element={
+                            <PageLayout>
+                                <Historico/>
+                            </PageLayout>
+                        }
+                    />
                 </Routes>
-                <FooterMenu/>
-            </div>
             </BrowserRouter>
-            {/* <FooterMenu/> */}
         </AppContext.Provider>
     )
 }
