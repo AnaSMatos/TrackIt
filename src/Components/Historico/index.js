@@ -1,18 +1,12 @@
 import { useContext } from "react";
 import styled from "styled-components"
 import { Link } from "react-router-dom"
-import UserContext from "../Context/UserContext";
+import AppContext from "../Context/AppContext";
 import picture from './../../Assets/TrackIt.png'
-import {
-    CircularProgressbar,
-    CircularProgressbarWithChildren,
-    buildStyles
-} from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
 
 export default function Historico(){
 
-    const { data } = useContext(UserContext);
+    const { data } = useContext(AppContext);
 
     return(
         <>
@@ -24,28 +18,6 @@ export default function Historico(){
                 <Texto>Histórico</Texto>
                 <Aviso>Em breve você poderá ver o histórico dos seus hábitos aqui!</Aviso>
             </Content>
-            <Menu>
-                <StyledLink to={"/habitos"}>
-                    <p>Hábitos</p>
-                </StyledLink>
-                <StyledLink to={"/hoje"}>
-                    <Circulo
-                            value={0}
-                            text={`Hoje`}
-                            background
-                            backgroundPadding={6}
-                            styles={buildStyles({
-                                backgroundColor: "#3e98c7",
-                                textColor: "#fff",
-                                pathColor: "#fff",
-                                trailColor: "transparent"
-                            })}
-                    />
-                </StyledLink>
-                <StyledLink to={"/historico"}>
-                    <p>Histórico</p>
-                </StyledLink>
-            </Menu>
         </>
     )
 }
@@ -97,34 +69,3 @@ const Content = styled.div`
     padding: 0 20px;
     
 `
-
-const Menu = styled.div`
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: #FFFFFF;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 30px;
-    box-sizing: border-box;
-    height: 70px;
-`
-
-const Circulo = styled(CircularProgressbar)`
-    width: 91px;
-    position: absolute;
-    bottom: 10px;
-    left: 38vw;
-`
-
-const StyledLink = styled(Link)`
-    font-family: 'Lexend Deca',sans-serif;
-    color: #52B6FF;
-    font-size: 14px;
-
-    p{
-        font-size: 18px;
-    }
-    `;
