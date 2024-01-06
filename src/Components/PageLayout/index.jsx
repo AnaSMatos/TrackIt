@@ -17,11 +17,20 @@ export default function PageLayout({children}){
 }
 
 const Container = styled.div`
-    background-color: #f3f2f3;
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
 `
 
-const Content = styled.div``
+const Content = styled.div`
+    background-color: #f3f2f3;
+    height: calc(100% - 140px);
+    margin-top: 70px;
+    margin-bottom: 70px;
+    padding: 25px 15px;
+    overflow-y: scroll;
+`
