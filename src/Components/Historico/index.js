@@ -8,11 +8,9 @@ export default function Historico(){
 
     return(
         <>
-            <Content>
-                <Texto>Histórico</Texto>
-                <Aviso>Em breve você poderá ver o histórico dos seus hábitos aqui!</Aviso>
-            </Content>
-        </>
+            <Texto>Histórico</Texto>
+            <Aviso>Em breve você poderá ver o histórico dos seus hábitos aqui!</Aviso>
+         </>
     )
 }
 
@@ -27,13 +25,4 @@ const Aviso = styled.p`
     font-family: 'Lexend Deca', sans-serif;
     color: #666666;
     font-size: 18px;
-`
-
-const Content = styled.div`
-    height: calc(100vh - 200px);
-    margin-top: 100px;
-    margin-bottom: 100px;
-    box-sizing: border-box;
-    padding: 0 20px;
-    
 `

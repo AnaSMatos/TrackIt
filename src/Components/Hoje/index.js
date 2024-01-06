@@ -85,23 +85,21 @@ export default function Hoje(){
     let dia = dayjs().format('DD/MM')
     return(
         <>
-            <Content>
-                <Texto>{weekdays[dayjs().day()]}, {dia}</Texto>
-                {habitosHoje.map((habito, index) => {
-                    return(
-                        <Habito key={index}>
-                            <Infos>
-                                <h1>{habito.name}</h1>
-                                <p>Sequência atual: {habito.currentSequence} dias</p>
-                                <p>Seu recorde: {habito.highestSequence} dias</p>
-                            </Infos>
-                            <Feito className={habito.done ? "selected" : "not-selected"} onClick={(e) => selecionar(e, habito.id, habito.done)}>
-                                <img src={check} alt=""></img>
-                            </Feito>
-                        </Habito>
-                    )
-                })}
-            </Content>
+            <Texto>{weekdays[dayjs().day()]}, {dia}</Texto>
+            {habitosHoje.map((habito, index) => {
+                return(
+                    <Habito key={index}>
+                        <Infos>
+                            <h1>{habito.name}</h1>
+                            <p>Sequência atual: {habito.currentSequence} dias</p>
+                            <p>Seu recorde: {habito.highestSequence} dias</p>
+                        </Infos>
+                        <Feito className={habito.done ? "selected" : "not-selected"} onClick={(e) => selecionar(e, habito.id, habito.done)}>
+                            <img src={check} alt=""></img>
+                        </Feito>
+                    </Habito>
+                )
+            })}
         </>
     )
 }
@@ -151,14 +149,6 @@ const Feito = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-`
-
-const Content = styled.div`
-    height: calc(100vh - 200px);
-    margin-top: 100px;
-    margin-bottom: 100px;
-    box-sizing: border-box;
-    padding: 0 20px;
 `
 
 const Texto = styled.div`
