@@ -7,7 +7,9 @@ export default function Header(){
     return(
         <Top>
             <Logo>TrackIt</Logo>
-            <Img src={data.image}></Img>
+            <Profile>
+                <Img src={data.image}></Img>
+            </Profile>
         </Top>
     )
 }
@@ -34,8 +36,13 @@ const Top = styled.div`
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
 `
 
-const Img = styled.img`
+const Profile = styled.div`
     width: 51px;
     height: 51px;
     border-radius: 50%;
+    overflow: hidden;
+`
+
+const Img = styled.img`
+    height: 51px;
 `

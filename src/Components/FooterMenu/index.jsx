@@ -16,7 +16,7 @@ export default function FooterMenu(){
             <StyledLink to={"/hoje"}>
                 <Circulo>
                     <CircularProgressbar
-                    value={0}
+                    value={percentage}
                     text={`Hoje`}
                     background
                     backgroundPadding={6}
