@@ -9,8 +9,8 @@ import { ThreeDots } from 'react-loader-spinner';
 export default function Home({setData}){
 
     const navigate = useNavigate();
-    const [email, setEmail] = useState("clara@driven.com");
-    const [senha, setSenha] = useState("clara");
+    const [email, setEmail] = useState("user@test.com");
+    const [senha, setSenha] = useState("usertest");
     const [loading, setLoading] = useState(false)
 
     function handleSubmit(e){
@@ -60,7 +60,9 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     margin-top: 85px;
+    background-color: #fff;
 `;
+
 const Logo = styled.div`
     img{
         width: 180px;
